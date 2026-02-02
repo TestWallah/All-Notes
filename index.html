@@ -3,291 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Future Result 2026</title>
-    <!-- Tailwind CSS for App-like UI -->
+    <title>Suyash Topper 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #000;
-            overflow: hidden; /* Prevent scrolling */
-        }
-        
-        /* Animation Classes */
-        .slide-up { animation: slideUp 0.5s ease-out; }
-        .bounce { animation: bounce 2s infinite; }
-        .pulse { animation: pulse 1.5s infinite; }
-        .spin { animation: spin 1s linear infinite; }
-        .hidden { display: none !important; }
-
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(-10%); }
-            50% { transform: translateY(0); }
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* App Container styling */
-        #app-container {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Floating particles */
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            pointer-events: none;
-        }
+        body { font-family: 'Poppins', sans-serif; background: #000; user-select: none; overflow: hidden; }
+        .app-bg { background: linear-gradient(45deg, #ff00cc, #333399); min-height: 100vh; }
+        .glass { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        .hidden { display: none; }
+        .spin-slow { animation: spin 3s linear infinite; }
+        .pop-in { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
     </style>
 </head>
-<body>
+<body class="app-bg text-white flex items-center justify-center p-4">
 
-    <!-- Sound Element (Uses a placeholder sound, replace src with your suyash.mp3 link if you have it hosted) -->
-    <audio id="bg-audio" loop>
-        <!-- Using a generic upbeat sound as placeholder -->
+    <!-- AUDIO PLAYER (HIDDEN) -->
+    <!-- Ye 'Suyash.mp3' file ko same folder me dhoondega -->
+    <audio id="myAudio" loop>
+        <source src="Suyash.mp3" type="audio/mpeg">
+        <!-- Fallback agar file nahi mili to ye bajega -->
         <source src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="app-container" class="flex flex-col items-center justify-center p-4 text-white">
+    <!-- PAGE 1: CREATE ACCOUNT -->
+    <div id="page-login" class="w-full max-w-md glass rounded-3xl p-8 shadow-2xl pop-in relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500"></div>
         
-        <!-- SCREEN 1: LOGIN -->
-        <div id="login-screen" class="w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 p-8 rounded-3xl shadow-2xl slide-up">
-            <div class="text-center mb-8">
-                <div class="inline-block p-4 bg-yellow-400 rounded-full mb-4 shadow-lg bounce">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-purple-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                </div>
-                <h1 class="text-3xl font-bold mb-2">Future Portal 🚀</h1>
-                <p class="text-gray-200 text-sm">Create Account to see 2026 Results</p>
+        <div class="text-center mb-8">
+            <div class="inline-block p-4 bg-white rounded-full mb-4 shadow-lg">
+                <span class="text-4xl">🎓</span>
             </div>
-
-            <form onsubmit="handleLogin(event)" class="space-y-5">
-                <div>
-                    <input type="text" id="username" placeholder="Enter Full Name" required 
-                        class="w-full px-5 py-4 rounded-xl bg-white/20 border border-white/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition">
-                </div>
-                <div>
-                    <input type="password" placeholder="Create Password" required 
-                        class="w-full px-5 py-4 rounded-xl bg-white/20 border border-white/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition">
-                </div>
-                <button type="submit" 
-                    class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-900 font-bold py-4 rounded-xl shadow-lg transform transition hover:scale-105 active:scale-95 text-lg">
-                    Check My Future
-                </button>
-            </form>
+            <h1 class="text-3xl font-black italic tracking-tighter">FUTURE RESULT APP</h1>
+            <p class="text-sm text-gray-200 mt-1">Class of 2026 Database</p>
         </div>
 
-        <!-- SCREEN 2: LOADING -->
-        <div id="loading-screen" class="hidden text-center w-full max-w-md">
-            <div class="w-24 h-24 border-4 border-yellow-400 border-t-transparent rounded-full spin mx-auto mb-8"></div>
-            <h2 class="text-2xl font-bold animate-pulse mb-2">Analyzing Brain...</h2>
-            <p id="loading-text" class="text-yellow-200 font-mono">Connecting to Exam Server...</p>
-            
-            <div class="w-full bg-white/20 h-4 rounded-full mt-8 overflow-hidden">
-                <div id="loading-bar" class="bg-yellow-400 h-full w-0 transition-all duration-300"></div>
+        <form onsubmit="startPrank(event)" class="space-y-4">
+            <div>
+                <label class="text-xs font-bold uppercase ml-1">Student Name</label>
+                <input type="text" id="username" placeholder="Enter Name (e.g. Suyash)" required 
+                class="w-full p-4 rounded-xl bg-black/30 border border-white/20 focus:border-yellow-400 focus:outline-none text-white placeholder-gray-400 transition transform focus:scale-105">
             </div>
-            <p id="loading-percent" class="mt-2 text-right font-bold">0%</p>
+            <div>
+                <label class="text-xs font-bold uppercase ml-1">Password</label>
+                <input type="password" placeholder="Create Password" required 
+                class="w-full p-4 rounded-xl bg-black/30 border border-white/20 focus:border-yellow-400 focus:outline-none text-white transition transform focus:scale-105">
+            </div>
+            <button type="submit" 
+            class="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black text-xl py-4 rounded-xl shadow-lg transform transition hover:scale-105 active:scale-95 mt-4">
+                CREATE ACCOUNT &rarr;
+            </button>
+        </form>
+        <p class="text-center text-xs text-gray-300 mt-6 opacity-60">Server Status: Online ✅</p>
+    </div>
+
+    <!-- PAGE 2: LOADING -->
+    <div id="page-loading" class="hidden text-center w-full max-w-xs">
+        <div class="w-24 h-24 border-8 border-white/20 border-t-yellow-400 rounded-full spin-slow mx-auto mb-6"></div>
+        <h2 class="text-2xl font-bold animate-pulse">Processing Data...</h2>
+        <p id="hack-text" class="text-green-300 font-mono text-sm mt-2">Connecting to Board Server...</p>
+        <div class="w-full bg-gray-700 h-2 rounded-full mt-4 overflow-hidden">
+            <div id="load-bar" class="bg-yellow-400 h-full w-0"></div>
         </div>
+    </div>
 
-        <!-- SCREEN 3: RESULT -->
-        <div id="result-screen" class="hidden w-full max-w-md text-center slide-up relative z-10">
-            <div class="absolute top-0 left-0 w-full h-full pointer-events-none" id="confetti-container"></div>
-            
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-yellow-300 mx-auto mb-4 drop-shadow-lg bounce" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-            </svg>
+    <!-- PAGE 3: RESULT -->
+    <div id="page-result" class="hidden w-full max-w-md text-center relative z-10 pop-in">
+        <!-- Confetti Canvas -->
+        <div class="absolute inset-0 pointer-events-none" id="confetti"></div>
 
-            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200 mb-2">CONGRATULATIONS</h1>
+        <div class="glass rounded-3xl p-6 border-2 border-yellow-400 shadow-[0_0_50px_rgba(255,215,0,0.5)]">
+            <span class="text-6xl filter drop-shadow-lg">🏆</span>
+            <h1 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-500 to-yellow-200 mt-2 mb-2">RANK 1</h1>
             
-            <div class="bg-white/10 backdrop-blur-md border border-yellow-400/50 p-6 rounded-2xl mt-6 transform hover:scale-105 transition duration-300">
-                <h2 class="text-2xl text-white">Name: <span id="display-name" class="font-bold text-yellow-300">User</span></h2>
-                <div class="my-4 border-t border-white/20 border-b py-4">
-                    <p class="text-sm uppercase tracking-widest text-gray-300">Official Result 2026</p>
-                    <p class="text-6xl font-black text-yellow-400 mt-2">RANK 1</p>
-                    <p class="text-xl text-green-300 mt-1">Topper of The Year 🏆</p>
-                </div>
-                <p class="text-xs text-gray-400">Verified by NASA & Gov of Earth 🤣</p>
+            <div class="bg-black/40 rounded-xl p-4 mb-6">
+                <h2 class="text-2xl font-bold text-white mb-1">CONGRATULATIONS</h2>
+                <h3 id="final-name" class="text-3xl font-black text-yellow-300 uppercase tracking-widest border-b-2 border-white/20 pb-2 mb-2">SUYASH</h3>
+                <p class="text-green-400 font-mono font-bold text-lg">TOPPER 2026</p>
+                <p class="text-sm text-gray-300">Verified by Board of Education</p>
             </div>
 
-            <button onclick="startFakeDownload()" class="mt-8 bg-red-600 w-full py-4 rounded-full font-bold text-xl shadow-[0_0_20px_rgba(220,38,38,0.7)] hover:bg-red-500 animate-pulse flex items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                DOWNLOAD NOTES (100MB)
+            <button onclick="startDownloadPrank()" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-xl text-lg shadow-[0_0_20px_rgba(220,38,38,0.8)] animate-bounce flex items-center justify-center gap-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                DOWNLOAD ALL NOTES (100MB)
             </button>
         </div>
+    </div>
 
-        <!-- SCREEN 4: FAKE DOWNLOAD MODAL -->
-        <div id="download-modal" class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
-            <div class="bg-gray-800 w-full max-w-lg rounded-2xl border border-red-500 p-6 shadow-2xl">
-                <div class="text-center mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-500 mx-auto mb-2 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                    </svg>
-                    <h2 class="text-2xl font-bold text-red-400">Downloading Heavy File...</h2>
-                    <p class="text-gray-400 text-sm">Do NOT close. Data Consumption: High</p>
-                </div>
+    <!-- PAGE 4: FAKE DOWNLOAD MODAL -->
+    <div id="fake-modal" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center p-4 z-50">
+        <div class="w-full max-w-lg bg-gray-900 border border-red-600 rounded-lg p-6 font-mono text-green-500 shadow-2xl">
+            <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
+                <span class="text-red-500 font-bold blink">⚠ DOWNLOADING...</span>
+                <span id="dl-percent">0%</span>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-800 h-6 mb-4 border border-gray-600">
+                <div id="dl-bar" class="bg-red-600 h-full w-0 transition-all duration-75"></div>
+            </div>
 
-                <div class="space-y-2">
-                    <div class="flex justify-between text-xs font-mono text-green-400">
-                        <span id="dl-status">Starting...</span>
-                        <span id="dl-percent">0%</span>
-                    </div>
-                    <div class="w-full bg-gray-700 h-6 rounded-full overflow-hidden">
-                        <div id="dl-bar" class="bg-red-600 h-full w-0 transition-all duration-100"></div>
-                    </div>
-                </div>
+            <!-- Terminal Logs -->
+            <div id="logs" class="h-40 overflow-hidden text-xs space-y-1 opacity-80">
+                <p>> Initializing connection...</p>
+            </div>
 
-                <div id="console-log" class="mt-4 bg-black p-3 rounded h-32 overflow-y-auto font-mono text-xs text-green-500 border border-gray-700">
-                    > Initializing request...<br>
-                </div>
-
-                <div id="end-prank-msg" class="hidden mt-6 text-center">
-                    <p class="text-4xl">🤣🤣🤣</p>
-                    <p class="text-yellow-400 font-bold text-lg mt-2">Prank Complete! No data wasted.</p>
-                    <button onclick="location.reload()" class="mt-4 px-6 py-2 bg-gray-600 rounded text-sm hover:bg-gray-500">Restart</button>
-                </div>
+            <!-- Final Message -->
+            <div id="final-msg" class="hidden text-center mt-6">
+                <p class="text-4xl mb-2">🤣🤣🤣</p>
+                <p class="text-white font-sans text-xl font-bold">Maza Aaya? Data Safe Hai!</p>
+                <p class="text-gray-400 text-sm mt-2">Just a Prank. Suyash is really a topper!</p>
+                <button onclick="location.reload()" class="mt-4 bg-gray-700 text-white px-6 py-2 rounded hover:bg-gray-600">Replay</button>
             </div>
         </div>
-
     </div>
 
     <script>
-        // --- LOGIC ---
+        const audio = document.getElementById("myAudio");
 
-        const audio = document.getElementById('bg-audio');
-        let userName = "";
-
-        function playSound() {
-            // Browsers only allow audio after user interaction
-            audio.play().catch(error => {
-                console.log("Audio play failed (user didn't interact yet):", error);
-            });
-        }
-
-        function handleLogin(e) {
+        function startPrank(e) {
             e.preventDefault();
-            userName = document.getElementById('username').value;
             
-            // Try to play sound
-            playSound();
+            // 1. Play Music (Requires interaction first)
+            audio.volume = 1.0; // Full Volume
+            audio.play().catch(err => console.log("Audio requires interaction first"));
 
-            // Switch UI
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('loading-screen').classList.remove('hidden');
+            // Get Name
+            const nameInput = document.getElementById('username').value;
+            document.getElementById('final-name').innerText = nameInput || "SUYASH";
 
-            startLoading();
-        }
+            // UI Switch
+            document.getElementById('page-login').classList.add('hidden');
+            document.getElementById('page-loading').classList.remove('hidden');
 
-        function startLoading() {
+            // Loading Logic
             let progress = 0;
-            const bar = document.getElementById('loading-bar');
-            const txt = document.getElementById('loading-percent');
-            const status = document.getElementById('loading-text');
-
-            const interval = setInterval(() => {
-                progress += Math.random() * 5;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    showResult();
-                }
-
+            const bar = document.getElementById('load-bar');
+            const txt = document.getElementById('hack-text');
+            
+            const timer = setInterval(() => {
+                progress += 2;
                 bar.style.width = progress + '%';
-                txt.innerText = Math.floor(progress) + '%';
 
-                if (progress > 30) status.innerText = "Hacking School Database...";
-                if (progress > 60) status.innerText = "Changing Marks to 100%...";
-                if (progress > 90) status.innerText = "Finalizing Rank 1...";
+                if(progress > 30) txt.innerText = "Accessing Secret Files...";
+                if(progress > 60) txt.innerText = "Generating Fake Rank...";
+                if(progress > 90) txt.innerText = "Finalizing Results...";
 
-            }, 200); // Adjust speed here
+                if(progress >= 100) {
+                    clearInterval(timer);
+                    document.getElementById('page-loading').classList.add('hidden');
+                    document.getElementById('page-result').classList.remove('hidden');
+                }
+            }, 50); // Fast loading
         }
 
-        function showResult() {
-            document.getElementById('loading-screen').classList.add('hidden');
-            document.getElementById('result-screen').classList.remove('hidden');
+        function startDownloadPrank() {
+            document.getElementById('fake-modal').classList.remove('hidden');
             
-            // Set Name
-            document.getElementById('display-name').innerText = userName || "Suyash";
-
-            // Create Confetti
-            const container = document.getElementById('confetti-container');
-            for(let i=0; i<50; i++) {
-                const conf = document.createElement('div');
-                conf.classList.add('particle');
-                conf.style.left = Math.random() * 100 + '%';
-                conf.style.top = Math.random() * 100 + '%';
-                conf.style.width = Math.random() * 10 + 'px';
-                conf.style.height = conf.style.width;
-                conf.style.backgroundColor = ['#FFD700', '#FF69B4', '#00FFFF', '#FFF'][Math.floor(Math.random()*4)];
-                conf.style.animation = `bounce ${Math.random() + 1}s infinite`;
-                container.appendChild(conf);
-            }
-        }
-
-        function startFakeDownload() {
-            document.getElementById('download-modal').classList.remove('hidden');
-            
-            let dlProgress = 0;
+            let dl = 0;
             const dlBar = document.getElementById('dl-bar');
-            const dlPercent = document.getElementById('dl-percent');
-            const dlStatus = document.getElementById('dl-status');
-            const consoleLog = document.getElementById('console-log');
+            const dlPer = document.getElementById('dl-percent');
+            const logs = document.getElementById('logs');
+            
+            const logMessages = [
+                "Bypassing Server Security...",
+                "Downloading Physics_Paper_Leaked.pdf...",
+                "Downloading Math_Formula_CheatSheet.zip...",
+                "Using 5G High Speed Data...",
+                "Warning: Battery Heating Up...",
+                "Downloading 4GB Ram...",
+                "Hacking NASA for Answer Key...",
+                "Consuming 1.5GB Daily Limit..."
+            ];
 
-            const addLog = (msg) => {
-                consoleLog.innerHTML += `> ${msg}<br>`;
-                consoleLog.scrollTop = consoleLog.scrollHeight;
-            };
+            const timer = setInterval(() => {
+                dl += 0.5; // Slow fake download
+                dlBar.style.width = dl + '%';
+                dlPer.innerText = Math.floor(dl) + '%';
 
-            const interval = setInterval(() => {
-                // Simulate slow progress then fast
-                dlProgress += 0.4; 
-                
-                if (dlProgress >= 100) {
-                    dlProgress = 100;
-                    clearInterval(interval);
-                    document.getElementById('end-prank-msg').classList.remove('hidden');
-                    addLog("<span style='color:red; font-weight:bold'>ERROR: DEVICE STORAGE FULL! JUST KIDDING 🤣</span>");
+                // Add random logs
+                if(Math.random() > 0.8) {
+                    const msg = logMessages[Math.floor(Math.random() * logMessages.length)];
+                    logs.innerHTML += `<p>> ${msg}</p>`;
+                    logs.scrollTop = logs.scrollHeight;
                 }
 
-                dlBar.style.width = dlProgress + '%';
-                dlPercent.innerText = dlProgress.toFixed(1) + '%';
-                dlStatus.innerText = `Downloading: ${(dlProgress).toFixed(1)} MB / 100 MB`;
-
-                // Fake logs based on progress
-                if (Math.random() > 0.9) {
-                    const logs = [
-                        "Bypassing Firewalls...",
-                        "Fetching Physics_Notes.pdf...",
-                        "Downloading 4k_Video_Lectures.zip...",
-                        "Consuming 4G Bandwidth...",
-                        "Warning: High Data Usage...",
-                        "Server overload..."
-                    ];
-                    addLog(logs[Math.floor(Math.random() * logs.length)]);
+                if(dl >= 100) {
+                    clearInterval(timer);
+                    document.getElementById('final-msg').classList.remove('hidden');
+                    logs.classList.add('hidden');
+                    document.querySelector('.blink').innerText = "DOWNLOAD COMPLETED";
+                    document.querySelector('.blink').classList.replace('text-red-500', 'text-green-500');
                 }
-
-            }, 100);
+            }, 50);
         }
     </script>
 </body>
 </html>
+
 
