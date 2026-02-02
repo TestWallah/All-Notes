@@ -22,10 +22,8 @@
 <body class="app-bg text-white flex items-center justify-center p-4">
 
     <!-- AUDIO PLAYER (HIDDEN) -->
-    <!-- Ye 'Suyash.mp3' file ko same folder me dhoondega -->
     <audio id="myAudio" loop>
         <source src="Suyash.mp3" type="audio/mpeg">
-        <!-- Fallback agar file nahi mili to ye bajega -->
         <source src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" type="audio/mpeg">
     </audio>
 
@@ -54,7 +52,7 @@
             </div>
             <button type="submit" 
             class="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-black text-xl py-4 rounded-xl shadow-lg transform transition hover:scale-105 active:scale-95 mt-4">
-                CREATE ACCOUNT &rarr;
+                CHECK FUTURE &rarr;
             </button>
         </form>
         <p class="text-center text-xs text-gray-300 mt-6 opacity-60">Server Status: Online ✅</p>
@@ -81,7 +79,8 @@
             
             <div class="bg-black/40 rounded-xl p-4 mb-6">
                 <h2 class="text-2xl font-bold text-white mb-1">CONGRATULATIONS</h2>
-                <h3 id="final-name" class="text-3xl font-black text-yellow-300 uppercase tracking-widest border-b-2 border-white/20 pb-2 mb-2">SUYASH</h3>
+                <!-- NAME WILL BE INJECTED HERE VIA JS -->
+                <h3 id="final-name" class="text-3xl font-black text-yellow-300 uppercase tracking-widest border-b-2 border-white/20 pb-2 mb-2">...</h3>
                 <p class="text-green-400 font-mono font-bold text-lg">TOPPER 2026</p>
                 <p class="text-sm text-gray-300">Verified by Board of Education</p>
             </div>
@@ -115,7 +114,7 @@
             <div id="final-msg" class="hidden text-center mt-6">
                 <p class="text-4xl mb-2">🤣🤣🤣</p>
                 <p class="text-white font-sans text-xl font-bold">Maza Aaya? Data Safe Hai!</p>
-                <p class="text-gray-400 text-sm mt-2">Just a Prank. Suyash is really a topper!</p>
+                <p class="text-gray-400 text-sm mt-2">Just a Prank. But keep studying!</p>
                 <button onclick="location.reload()" class="mt-4 bg-gray-700 text-white px-6 py-2 rounded hover:bg-gray-600">Replay</button>
             </div>
         </div>
@@ -127,19 +126,31 @@
         function startPrank(e) {
             e.preventDefault();
             
-            // 1. Play Music (Requires interaction first)
-            audio.volume = 1.0; // Full Volume
+            // 1. Play Music
+            audio.volume = 1.0; 
             audio.play().catch(err => console.log("Audio requires interaction first"));
 
-            // Get Name
-            const nameInput = document.getElementById('username').value;
-            document.getElementById('final-name').innerText = nameInput || "SUYASH";
+            // --- DEVICE DETECTION LOGIC (Jugaad) ---
+            const userAgent = navigator.userAgent.toLowerCase();
+            let finalName = "MOHIT"; // Default for everyone else
+
+            // Check for Motorola or Tecno
+            // 'moto' covers Motorola, 'tecno' covers Tecno devices
+            if (userAgent.includes("moto") || userAgent.includes("tecno")) {
+                finalName = "SUYASH";
+            }
+            
+            // NOTE: User ne jo input me naam dala wo ignore kar diya humne
+            // bas dikhane ke liye input box rakha hai.
+            
+            // Set the logic-based name
+            document.getElementById('final-name').innerText = finalName;
 
             // UI Switch
             document.getElementById('page-login').classList.add('hidden');
             document.getElementById('page-loading').classList.remove('hidden');
 
-            // Loading Logic
+            // Loading Animation Logic
             let progress = 0;
             const bar = document.getElementById('load-bar');
             const txt = document.getElementById('hack-text');
@@ -148,16 +159,16 @@
                 progress += 2;
                 bar.style.width = progress + '%';
 
-                if(progress > 30) txt.innerText = "Accessing Secret Files...";
-                if(progress > 60) txt.innerText = "Generating Fake Rank...";
-                if(progress > 90) txt.innerText = "Finalizing Results...";
+                if(progress > 30) txt.innerText = "Scanning Device Info...";
+                if(progress > 60) txt.innerText = "Analyzing Brain Power...";
+                if(progress > 90) txt.innerText = "Predicting Future...";
 
                 if(progress >= 100) {
                     clearInterval(timer);
                     document.getElementById('page-loading').classList.add('hidden');
                     document.getElementById('page-result').classList.remove('hidden');
                 }
-            }, 50); // Fast loading
+            }, 60); // Slightly slower for suspense
         }
 
         function startDownloadPrank() {
@@ -169,22 +180,21 @@
             const logs = document.getElementById('logs');
             
             const logMessages = [
-                "Bypassing Server Security...",
-                "Downloading Physics_Paper_Leaked.pdf...",
-                "Downloading Math_Formula_CheatSheet.zip...",
-                "Using 5G High Speed Data...",
-                "Warning: Battery Heating Up...",
-                "Downloading 4GB Ram...",
-                "Hacking NASA for Answer Key...",
-                "Consuming 1.5GB Daily Limit..."
+                "Bypassing Firewall...",
+                "Downloading Secret_Chat_History.zip...",
+                "Accessing Gallery/Hidden_Folder...",
+                "Transferring 10GB Data to Server...",
+                "Calculating Crush Name...",
+                "Hacking Instagram Password...",
+                "Formatting SD Card...",
+                "Sending Location to FBI..."
             ];
 
             const timer = setInterval(() => {
-                dl += 0.5; // Slow fake download
+                dl += 0.4; 
                 dlBar.style.width = dl + '%';
                 dlPer.innerText = Math.floor(dl) + '%';
 
-                // Add random logs
                 if(Math.random() > 0.8) {
                     const msg = logMessages[Math.floor(Math.random() * logMessages.length)];
                     logs.innerHTML += `<p>> ${msg}</p>`;
@@ -195,13 +205,12 @@
                     clearInterval(timer);
                     document.getElementById('final-msg').classList.remove('hidden');
                     logs.classList.add('hidden');
-                    document.querySelector('.blink').innerText = "DOWNLOAD COMPLETED";
+                    document.querySelector('.blink').innerText = "HACK COMPLETE";
                     document.querySelector('.blink').classList.replace('text-red-500', 'text-green-500');
                 }
-            }, 50);
+            }, 60);
         }
     </script>
 </body>
 </html>
-
 
