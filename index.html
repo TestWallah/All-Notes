@@ -1,0 +1,241 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Trophy, Download, AlertTriangle, Music, X } from 'lucide-react';
+
+const App = () => {
+  const [step, setStep] = useState('login'); // login, loading, result
+  const [name, setName] = useState('');
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [showFakeDownload, setShowFakeDownload] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const audioRef = useRef(null);
+
+  // Fake login handler
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (!name) return;
+    setStep('loading');
+  };
+
+  // Loading simulation effect
+  useEffect(() => {
+    if (step === 'loading') {
+      const interval = setInterval(() => {
+        setLoadingProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            setStep('result');
+            // Try to play audio automatically if browser allows, otherwise user must click
+            if(audioRef.current) {
+                audioRef.current.play().catch(e => console.log("Auto-play blocked by browser, user interaction needed"));
+            }
+            return 100;
+          }
+          return prev + 2; // Speed of loading
+        });
+      }, 50); // Adjust speed here (total approx 2.5 sec)
+      return () => clearInterval(interval);
+    }
+  }, [step]);
+
+  // Fake File Download Simulation
+  useEffect(() => {
+    if (showFakeDownload) {
+      setDownloadProgress(0);
+      const interval = setInterval(() => {
+        setDownloadProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prev + 0.5; // Very slow download simulation
+        });
+      }, 50);
+      return () => clearInterval(interval);
+    }
+  }, [showFakeDownload]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-red-500 font-sans text-white overflow-hidden relative">
+      
+      {/* Background Sound Element */}
+      {/* Note: Replace 'suyash.mp3' with a real URL if hosting somewhere. Browsers block autoplay without interaction usually. */}
+      <audio ref={audioRef} loop>
+        <source src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+
+      {/* STEP 1: LOGIN PAGE */}
+      {step === 'login' && (
+        <div className="flex flex-col items-center justify-center min-h-screen p-4 animate-fade-in">
+          <div className="bg-white/20 backdrop-blur-lg p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/30">
+            <h1 className="text-4xl font-extrabold text-center mb-6 drop-shadow-md">
+              Future Portal 🚀
+            </h1>
+            <p className="text-center mb-8 text-lg font-medium">Create Account to See Your Future Rank</p>
+            
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div>
+                <label className="block text-sm font-bold mb-2 ml-1">Full Name</label>
+                <input 
+                  type="text" 
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-white/80 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-yellow-400 transition transform hover:scale-105"
+                  placeholder="Enter your name..." 
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold mb-2 ml-1">Password</label>
+                <input 
+                  type="password" 
+                  className="w-full px-4 py-3 rounded-xl bg-white/80 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-yellow-400 transition transform hover:scale-105"
+                  placeholder="Anything works..." 
+                  required
+                />
+              </div>
+              <button 
+                type="submit"
+                className="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-900 font-bold py-4 rounded-xl text-xl shadow-lg transform transition hover:-translate-y-1 active:scale-95"
+              >
+                Reveal My Destiny
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* STEP 2: LOADING SCREEN */}
+      {step === 'loading' && (
+        <div className="flex flex-col items-center justify-center min-h-screen p-4">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-yellow-300 mb-8 mx-auto"></div>
+            <h2 className="text-3xl font-bold animate-pulse">Analyzing Database...</h2>
+            <p className="mt-4 text-xl">Hacking NASA servers... (Just kidding)</p>
+            
+            <div className="w-64 h-4 bg-white/30 rounded-full mt-8 mx-auto overflow-hidden">
+              <div 
+                className="h-full bg-yellow-400 transition-all duration-100 ease-out"
+                style={{ width: `${loadingProgress}%` }}
+              ></div>
+            </div>
+            <p className="mt-2 font-mono">{loadingProgress}%</p>
+          </div>
+        </div>
+      )}
+
+      {/* STEP 3: RESULT PAGE (TOPPER THEME) */}
+      {step === 'result' && (
+        <div className="min-h-screen flex flex-col items-center p-4 relative overflow-hidden">
+           {/* Confetti Background Effect (Simulated with dots) */}
+           <div className="absolute inset-0 pointer-events-none opacity-50">
+             {[...Array(20)].map((_, i) => (
+               <div key={i} className="absolute animate-bounce" style={{
+                 top: `${Math.random() * 100}%`,
+                 left: `${Math.random() * 100}%`,
+                 fontSize: '24px',
+                 animationDuration: `${Math.random() * 2 + 1}s`
+               }}>🎉</div>
+             ))}
+           </div>
+
+           <div className="mt-10 text-center z-10 animate-bounce-in">
+             <Trophy size={80} className="mx-auto text-yellow-300 drop-shadow-[0_0_15px_rgba(253,224,71,0.8)] mb-4" />
+             <h1 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200 drop-shadow-sm">
+               CONGRATULATIONS!
+             </h1>
+             
+             <div className="bg-white/10 backdrop-blur-md border-2 border-yellow-400/50 p-8 rounded-3xl mt-8 shadow-2xl transform hover:scale-105 transition duration-300 max-w-2xl w-full">
+               <h2 className="text-4xl font-bold text-white mb-2">
+                 Yes, {name || 'User'}!
+               </h2>
+               <div className="text-6xl font-black text-yellow-300 my-4 tracking-widest">
+                 TOPPER 2026
+               </div>
+               <div className="inline-block bg-yellow-500 text-purple-900 px-6 py-2 rounded-full font-bold text-2xl shadow-lg rotate-3 mb-6">
+                 AIR RANK 1 🏆
+               </div>
+               <p className="text-lg text-gray-200 italic">
+                 "Official declaration by the Board of Future Pranks"
+               </p>
+             </div>
+
+             <div className="mt-12 space-y-4">
+               <p className="text-xl font-semibold animate-pulse text-yellow-200">
+                 Exclusive Reward Unlocked! 👇
+               </p>
+               
+               <button 
+                 onClick={() => {
+                   setShowFakeDownload(true);
+                   if(audioRef.current) audioRef.current.play();
+                 }}
+                 className="bg-red-600 hover:bg-red-500 text-white font-bold py-4 px-10 rounded-full text-2xl shadow-[0_0_20px_rgba(220,38,38,0.6)] flex items-center gap-3 mx-auto transition transform hover:scale-110 active:scale-95"
+               >
+                 <Download size={32} />
+                 DOWNLOAD ALL NOTES (100MB)
+               </button>
+             </div>
+           </div>
+
+           {/* FAKE DOWNLOAD MODAL */}
+           {showFakeDownload && (
+             <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+               <div className="bg-gray-900 text-white p-8 rounded-2xl w-full max-w-lg border border-red-500 shadow-2xl relative">
+                 <button 
+                   onClick={() => setShowFakeDownload(false)}
+                   className="absolute top-4 right-4 text-gray-400 hover:text-white"
+                 >
+                   <X />
+                 </button>
+
+                 <div className="text-center">
+                   <AlertTriangle size={60} className="mx-auto text-red-500 mb-4 animate-pulse" />
+                   <h3 className="text-2xl font-bold text-red-400 mb-2">Downloading Heavy Files...</h3>
+                   <p className="text-gray-300 mb-6">Do not close this window or internet will crash!</p>
+                   
+                   {/* Fake Progress Bar */}
+                   <div className="w-full bg-gray-700 h-8 rounded-full overflow-hidden mb-2 relative">
+                     <div 
+                        className={`h-full ${downloadProgress < 100 ? 'bg-green-500' : 'bg-red-600'} transition-all duration-300 ease-linear`}
+                        style={{ width: `${downloadProgress}%` }}
+                     >
+                       <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white drop-shadow-md">
+                         {Math.round(downloadProgress)}%
+                       </div>
+                     </div>
+                   </div>
+                   
+                   <div className="text-left font-mono text-sm text-green-400 space-y-1 h-32 overflow-hidden bg-black/50 p-4 rounded border border-gray-700">
+                     <p>> Connecting to server...</p>
+                     {downloadProgress > 10 && <p>> Bypass firewall success...</p>}
+                     {downloadProgress > 30 && <p>> Fetching Physics_Notes_Ultra_Pro_Max.pdf...</p>}
+                     {downloadProgress > 60 && <p>> Consuming 4G/5G Bandwidth...</p>}
+                     {downloadProgress > 80 && <p>> Warning: Device heating up...</p>}
+                     {downloadProgress >= 100 && <p className="text-red-500 font-bold">>> ERROR: STUDENT IS TOO INTELLIGENT FOR THESE NOTES!</p>}
+                   </div>
+
+                   {downloadProgress >= 100 && (
+                      <div className="mt-6 animate-bounce">
+                        <p className="text-3xl">🤣🤣🤣</p>
+                        <p className="text-xl font-bold text-yellow-400 mt-2">Just Kidding! No data wasted.</p>
+                        <button 
+                          onClick={() => setShowFakeDownload(false)}
+                          className="mt-4 px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg"
+                        >
+                          Close Prank
+                        </button>
+                      </div>
+                   )}
+                 </div>
+               </div>
+             </div>
+           )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default App;
+
