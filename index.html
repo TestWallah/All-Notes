@@ -1,241 +1,293 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Trophy, Download, AlertTriangle, Music, X } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Result 2026</title>
+    <!-- Tailwind CSS for App-like UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000;
+            overflow: hidden; /* Prevent scrolling */
+        }
+        
+        /* Animation Classes */
+        .slide-up { animation: slideUp 0.5s ease-out; }
+        .bounce { animation: bounce 2s infinite; }
+        .pulse { animation: pulse 1.5s infinite; }
+        .spin { animation: spin 1s linear infinite; }
+        .hidden { display: none !important; }
 
-const App = () => {
-  const [step, setStep] = useState('login'); // login, loading, result
-  const [name, setName] = useState('');
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [showFakeDownload, setShowFakeDownload] = useState(false);
-  const [downloadProgress, setDownloadProgress] = useState(0);
-  const audioRef = useRef(null);
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-10%); }
+            50% { transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-  // Fake login handler
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (!name) return;
-    setStep('loading');
-  };
+        /* App Container styling */
+        #app-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
 
-  // Loading simulation effect
-  useEffect(() => {
-    if (step === 'loading') {
-      const interval = setInterval(() => {
-        setLoadingProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            setStep('result');
-            // Try to play audio automatically if browser allows, otherwise user must click
-            if(audioRef.current) {
-                audioRef.current.play().catch(e => console.log("Auto-play blocked by browser, user interaction needed"));
-            }
-            return 100;
-          }
-          return prev + 2; // Speed of loading
-        });
-      }, 50); // Adjust speed here (total approx 2.5 sec)
-      return () => clearInterval(interval);
-    }
-  }, [step]);
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
 
-  // Fake File Download Simulation
-  useEffect(() => {
-    if (showFakeDownload) {
-      setDownloadProgress(0);
-      const interval = setInterval(() => {
-        setDownloadProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            return 100;
-          }
-          return prev + 0.5; // Very slow download simulation
-        });
-      }, 50);
-      return () => clearInterval(interval);
-    }
-  }, [showFakeDownload]);
+    <!-- Sound Element (Uses a placeholder sound, replace src with your suyash.mp3 link if you have it hosted) -->
+    <audio id="bg-audio" loop>
+        <!-- Using a generic upbeat sound as placeholder -->
+        <source src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" type="audio/mpeg">
+    </audio>
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-red-500 font-sans text-white overflow-hidden relative">
-      
-      {/* Background Sound Element */}
-      {/* Note: Replace 'suyash.mp3' with a real URL if hosting somewhere. Browsers block autoplay without interaction usually. */}
-      <audio ref={audioRef} loop>
-        <source src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
-
-      {/* STEP 1: LOGIN PAGE */}
-      {step === 'login' && (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4 animate-fade-in">
-          <div className="bg-white/20 backdrop-blur-lg p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/30">
-            <h1 className="text-4xl font-extrabold text-center mb-6 drop-shadow-md">
-              Future Portal 🚀
-            </h1>
-            <p className="text-center mb-8 text-lg font-medium">Create Account to See Your Future Rank</p>
-            
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div>
-                <label className="block text-sm font-bold mb-2 ml-1">Full Name</label>
-                <input 
-                  type="text" 
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-white/80 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-yellow-400 transition transform hover:scale-105"
-                  placeholder="Enter your name..." 
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-2 ml-1">Password</label>
-                <input 
-                  type="password" 
-                  className="w-full px-4 py-3 rounded-xl bg-white/80 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-yellow-400 transition transform hover:scale-105"
-                  placeholder="Anything works..." 
-                  required
-                />
-              </div>
-              <button 
-                type="submit"
-                className="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-900 font-bold py-4 rounded-xl text-xl shadow-lg transform transition hover:-translate-y-1 active:scale-95"
-              >
-                Reveal My Destiny
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* STEP 2: LOADING SCREEN */}
-      {step === 'loading' && (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-yellow-300 mb-8 mx-auto"></div>
-            <h2 className="text-3xl font-bold animate-pulse">Analyzing Database...</h2>
-            <p className="mt-4 text-xl">Hacking NASA servers... (Just kidding)</p>
-            
-            <div className="w-64 h-4 bg-white/30 rounded-full mt-8 mx-auto overflow-hidden">
-              <div 
-                className="h-full bg-yellow-400 transition-all duration-100 ease-out"
-                style={{ width: `${loadingProgress}%` }}
-              ></div>
+    <div id="app-container" class="flex flex-col items-center justify-center p-4 text-white">
+        
+        <!-- SCREEN 1: LOGIN -->
+        <div id="login-screen" class="w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 p-8 rounded-3xl shadow-2xl slide-up">
+            <div class="text-center mb-8">
+                <div class="inline-block p-4 bg-yellow-400 rounded-full mb-4 shadow-lg bounce">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-purple-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold mb-2">Future Portal 🚀</h1>
+                <p class="text-gray-200 text-sm">Create Account to see 2026 Results</p>
             </div>
-            <p className="mt-2 font-mono">{loadingProgress}%</p>
-          </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-5">
+                <div>
+                    <input type="text" id="username" placeholder="Enter Full Name" required 
+                        class="w-full px-5 py-4 rounded-xl bg-white/20 border border-white/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition">
+                </div>
+                <div>
+                    <input type="password" placeholder="Create Password" required 
+                        class="w-full px-5 py-4 rounded-xl bg-white/20 border border-white/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition">
+                </div>
+                <button type="submit" 
+                    class="w-full bg-yellow-400 hover:bg-yellow-300 text-purple-900 font-bold py-4 rounded-xl shadow-lg transform transition hover:scale-105 active:scale-95 text-lg">
+                    Check My Future
+                </button>
+            </form>
         </div>
-      )}
 
-      {/* STEP 3: RESULT PAGE (TOPPER THEME) */}
-      {step === 'result' && (
-        <div className="min-h-screen flex flex-col items-center p-4 relative overflow-hidden">
-           {/* Confetti Background Effect (Simulated with dots) */}
-           <div className="absolute inset-0 pointer-events-none opacity-50">
-             {[...Array(20)].map((_, i) => (
-               <div key={i} className="absolute animate-bounce" style={{
-                 top: `${Math.random() * 100}%`,
-                 left: `${Math.random() * 100}%`,
-                 fontSize: '24px',
-                 animationDuration: `${Math.random() * 2 + 1}s`
-               }}>🎉</div>
-             ))}
-           </div>
-
-           <div className="mt-10 text-center z-10 animate-bounce-in">
-             <Trophy size={80} className="mx-auto text-yellow-300 drop-shadow-[0_0_15px_rgba(253,224,71,0.8)] mb-4" />
-             <h1 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200 drop-shadow-sm">
-               CONGRATULATIONS!
-             </h1>
-             
-             <div className="bg-white/10 backdrop-blur-md border-2 border-yellow-400/50 p-8 rounded-3xl mt-8 shadow-2xl transform hover:scale-105 transition duration-300 max-w-2xl w-full">
-               <h2 className="text-4xl font-bold text-white mb-2">
-                 Yes, {name || 'User'}!
-               </h2>
-               <div className="text-6xl font-black text-yellow-300 my-4 tracking-widest">
-                 TOPPER 2026
-               </div>
-               <div className="inline-block bg-yellow-500 text-purple-900 px-6 py-2 rounded-full font-bold text-2xl shadow-lg rotate-3 mb-6">
-                 AIR RANK 1 🏆
-               </div>
-               <p className="text-lg text-gray-200 italic">
-                 "Official declaration by the Board of Future Pranks"
-               </p>
-             </div>
-
-             <div className="mt-12 space-y-4">
-               <p className="text-xl font-semibold animate-pulse text-yellow-200">
-                 Exclusive Reward Unlocked! 👇
-               </p>
-               
-               <button 
-                 onClick={() => {
-                   setShowFakeDownload(true);
-                   if(audioRef.current) audioRef.current.play();
-                 }}
-                 className="bg-red-600 hover:bg-red-500 text-white font-bold py-4 px-10 rounded-full text-2xl shadow-[0_0_20px_rgba(220,38,38,0.6)] flex items-center gap-3 mx-auto transition transform hover:scale-110 active:scale-95"
-               >
-                 <Download size={32} />
-                 DOWNLOAD ALL NOTES (100MB)
-               </button>
-             </div>
-           </div>
-
-           {/* FAKE DOWNLOAD MODAL */}
-           {showFakeDownload && (
-             <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-               <div className="bg-gray-900 text-white p-8 rounded-2xl w-full max-w-lg border border-red-500 shadow-2xl relative">
-                 <button 
-                   onClick={() => setShowFakeDownload(false)}
-                   className="absolute top-4 right-4 text-gray-400 hover:text-white"
-                 >
-                   <X />
-                 </button>
-
-                 <div className="text-center">
-                   <AlertTriangle size={60} className="mx-auto text-red-500 mb-4 animate-pulse" />
-                   <h3 className="text-2xl font-bold text-red-400 mb-2">Downloading Heavy Files...</h3>
-                   <p className="text-gray-300 mb-6">Do not close this window or internet will crash!</p>
-                   
-                   {/* Fake Progress Bar */}
-                   <div className="w-full bg-gray-700 h-8 rounded-full overflow-hidden mb-2 relative">
-                     <div 
-                        className={`h-full ${downloadProgress < 100 ? 'bg-green-500' : 'bg-red-600'} transition-all duration-300 ease-linear`}
-                        style={{ width: `${downloadProgress}%` }}
-                     >
-                       <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white drop-shadow-md">
-                         {Math.round(downloadProgress)}%
-                       </div>
-                     </div>
-                   </div>
-                   
-                   <div className="text-left font-mono text-sm text-green-400 space-y-1 h-32 overflow-hidden bg-black/50 p-4 rounded border border-gray-700">
-                     <p>> Connecting to server...</p>
-                     {downloadProgress > 10 && <p>> Bypass firewall success...</p>}
-                     {downloadProgress > 30 && <p>> Fetching Physics_Notes_Ultra_Pro_Max.pdf...</p>}
-                     {downloadProgress > 60 && <p>> Consuming 4G/5G Bandwidth...</p>}
-                     {downloadProgress > 80 && <p>> Warning: Device heating up...</p>}
-                     {downloadProgress >= 100 && <p className="text-red-500 font-bold">>> ERROR: STUDENT IS TOO INTELLIGENT FOR THESE NOTES!</p>}
-                   </div>
-
-                   {downloadProgress >= 100 && (
-                      <div className="mt-6 animate-bounce">
-                        <p className="text-3xl">🤣🤣🤣</p>
-                        <p className="text-xl font-bold text-yellow-400 mt-2">Just Kidding! No data wasted.</p>
-                        <button 
-                          onClick={() => setShowFakeDownload(false)}
-                          className="mt-4 px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg"
-                        >
-                          Close Prank
-                        </button>
-                      </div>
-                   )}
-                 </div>
-               </div>
-             </div>
-           )}
+        <!-- SCREEN 2: LOADING -->
+        <div id="loading-screen" class="hidden text-center w-full max-w-md">
+            <div class="w-24 h-24 border-4 border-yellow-400 border-t-transparent rounded-full spin mx-auto mb-8"></div>
+            <h2 class="text-2xl font-bold animate-pulse mb-2">Analyzing Brain...</h2>
+            <p id="loading-text" class="text-yellow-200 font-mono">Connecting to Exam Server...</p>
+            
+            <div class="w-full bg-white/20 h-4 rounded-full mt-8 overflow-hidden">
+                <div id="loading-bar" class="bg-yellow-400 h-full w-0 transition-all duration-300"></div>
+            </div>
+            <p id="loading-percent" class="mt-2 text-right font-bold">0%</p>
         </div>
-      )}
+
+        <!-- SCREEN 3: RESULT -->
+        <div id="result-screen" class="hidden w-full max-w-md text-center slide-up relative z-10">
+            <div class="absolute top-0 left-0 w-full h-full pointer-events-none" id="confetti-container"></div>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-yellow-300 mx-auto mb-4 drop-shadow-lg bounce" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+
+            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200 mb-2">CONGRATULATIONS</h1>
+            
+            <div class="bg-white/10 backdrop-blur-md border border-yellow-400/50 p-6 rounded-2xl mt-6 transform hover:scale-105 transition duration-300">
+                <h2 class="text-2xl text-white">Name: <span id="display-name" class="font-bold text-yellow-300">User</span></h2>
+                <div class="my-4 border-t border-white/20 border-b py-4">
+                    <p class="text-sm uppercase tracking-widest text-gray-300">Official Result 2026</p>
+                    <p class="text-6xl font-black text-yellow-400 mt-2">RANK 1</p>
+                    <p class="text-xl text-green-300 mt-1">Topper of The Year 🏆</p>
+                </div>
+                <p class="text-xs text-gray-400">Verified by NASA & Gov of Earth 🤣</p>
+            </div>
+
+            <button onclick="startFakeDownload()" class="mt-8 bg-red-600 w-full py-4 rounded-full font-bold text-xl shadow-[0_0_20px_rgba(220,38,38,0.7)] hover:bg-red-500 animate-pulse flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                DOWNLOAD NOTES (100MB)
+            </button>
+        </div>
+
+        <!-- SCREEN 4: FAKE DOWNLOAD MODAL -->
+        <div id="download-modal" class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+            <div class="bg-gray-800 w-full max-w-lg rounded-2xl border border-red-500 p-6 shadow-2xl">
+                <div class="text-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-500 mx-auto mb-2 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <h2 class="text-2xl font-bold text-red-400">Downloading Heavy File...</h2>
+                    <p class="text-gray-400 text-sm">Do NOT close. Data Consumption: High</p>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-mono text-green-400">
+                        <span id="dl-status">Starting...</span>
+                        <span id="dl-percent">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-700 h-6 rounded-full overflow-hidden">
+                        <div id="dl-bar" class="bg-red-600 h-full w-0 transition-all duration-100"></div>
+                    </div>
+                </div>
+
+                <div id="console-log" class="mt-4 bg-black p-3 rounded h-32 overflow-y-auto font-mono text-xs text-green-500 border border-gray-700">
+                    > Initializing request...<br>
+                </div>
+
+                <div id="end-prank-msg" class="hidden mt-6 text-center">
+                    <p class="text-4xl">🤣🤣🤣</p>
+                    <p class="text-yellow-400 font-bold text-lg mt-2">Prank Complete! No data wasted.</p>
+                    <button onclick="location.reload()" class="mt-4 px-6 py-2 bg-gray-600 rounded text-sm hover:bg-gray-500">Restart</button>
+                </div>
+            </div>
+        </div>
+
     </div>
-  );
-};
 
-export default App;
+    <script>
+        // --- LOGIC ---
+
+        const audio = document.getElementById('bg-audio');
+        let userName = "";
+
+        function playSound() {
+            // Browsers only allow audio after user interaction
+            audio.play().catch(error => {
+                console.log("Audio play failed (user didn't interact yet):", error);
+            });
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            userName = document.getElementById('username').value;
+            
+            // Try to play sound
+            playSound();
+
+            // Switch UI
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('loading-screen').classList.remove('hidden');
+
+            startLoading();
+        }
+
+        function startLoading() {
+            let progress = 0;
+            const bar = document.getElementById('loading-bar');
+            const txt = document.getElementById('loading-percent');
+            const status = document.getElementById('loading-text');
+
+            const interval = setInterval(() => {
+                progress += Math.random() * 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    showResult();
+                }
+
+                bar.style.width = progress + '%';
+                txt.innerText = Math.floor(progress) + '%';
+
+                if (progress > 30) status.innerText = "Hacking School Database...";
+                if (progress > 60) status.innerText = "Changing Marks to 100%...";
+                if (progress > 90) status.innerText = "Finalizing Rank 1...";
+
+            }, 200); // Adjust speed here
+        }
+
+        function showResult() {
+            document.getElementById('loading-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            
+            // Set Name
+            document.getElementById('display-name').innerText = userName || "Suyash";
+
+            // Create Confetti
+            const container = document.getElementById('confetti-container');
+            for(let i=0; i<50; i++) {
+                const conf = document.createElement('div');
+                conf.classList.add('particle');
+                conf.style.left = Math.random() * 100 + '%';
+                conf.style.top = Math.random() * 100 + '%';
+                conf.style.width = Math.random() * 10 + 'px';
+                conf.style.height = conf.style.width;
+                conf.style.backgroundColor = ['#FFD700', '#FF69B4', '#00FFFF', '#FFF'][Math.floor(Math.random()*4)];
+                conf.style.animation = `bounce ${Math.random() + 1}s infinite`;
+                container.appendChild(conf);
+            }
+        }
+
+        function startFakeDownload() {
+            document.getElementById('download-modal').classList.remove('hidden');
+            
+            let dlProgress = 0;
+            const dlBar = document.getElementById('dl-bar');
+            const dlPercent = document.getElementById('dl-percent');
+            const dlStatus = document.getElementById('dl-status');
+            const consoleLog = document.getElementById('console-log');
+
+            const addLog = (msg) => {
+                consoleLog.innerHTML += `> ${msg}<br>`;
+                consoleLog.scrollTop = consoleLog.scrollHeight;
+            };
+
+            const interval = setInterval(() => {
+                // Simulate slow progress then fast
+                dlProgress += 0.4; 
+                
+                if (dlProgress >= 100) {
+                    dlProgress = 100;
+                    clearInterval(interval);
+                    document.getElementById('end-prank-msg').classList.remove('hidden');
+                    addLog("<span style='color:red; font-weight:bold'>ERROR: DEVICE STORAGE FULL! JUST KIDDING 🤣</span>");
+                }
+
+                dlBar.style.width = dlProgress + '%';
+                dlPercent.innerText = dlProgress.toFixed(1) + '%';
+                dlStatus.innerText = `Downloading: ${(dlProgress).toFixed(1)} MB / 100 MB`;
+
+                // Fake logs based on progress
+                if (Math.random() > 0.9) {
+                    const logs = [
+                        "Bypassing Firewalls...",
+                        "Fetching Physics_Notes.pdf...",
+                        "Downloading 4k_Video_Lectures.zip...",
+                        "Consuming 4G Bandwidth...",
+                        "Warning: High Data Usage...",
+                        "Server overload..."
+                    ];
+                    addLog(logs[Math.floor(Math.random() * logs.length)]);
+                }
+
+            }, 100);
+        }
+    </script>
+</body>
+</html>
 
